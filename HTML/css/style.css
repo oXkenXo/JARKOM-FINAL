@@ -250,3 +250,174 @@ footer {
         margin: 5px 0;
     }
 }
+
+/* =========================================
+9. EXTRA COMPONENTS & INTERACTIVITY
+========================================= */
+
+.step-box {
+background: #2563eb;
+color: white;
+padding: 12px 20px;
+border-radius: 10px;
+cursor: pointer;
+transition: 0.3s;
+text-align: center;
+}
+
+.step-box:hover {
+transform: scale(1.05);
+background: #1d4ed8;
+}
+
+.active-box {
+background: #1e40af;
+}
+
+.video-container {
+position: relative;
+width: 100%;
+padding-bottom: 56.25%;
+overflow: hidden;
+border-radius: 10px;
+}
+
+.video-container iframe {
+position: absolute;
+width: 100%;
+height: 100%;
+border: none;
+}
+
+.video-player {
+width: 100%;
+border-radius: 10px;
+}
+
+.img-center {
+display: block;
+margin: 20px auto;
+max-width: 100%;
+border-radius: 10px;
+}
+
+.packet-flow {
+position: relative;
+height: 120px;
+margin: 30px 0;
+}
+
+.node {
+width: 120px;
+padding: 15px;
+background: #1e3a8a;
+color: white;
+border-radius: 10px;
+text-align: center;
+position: absolute;
+top: 20px;
+}
+
+.client {
+left: 0;
+}
+
+.server {
+right: 0;
+}
+
+.packet {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+position: absolute;
+top: 50px;
+}
+
+.request {
+background: #2563eb;
+animation: moveRight 2s infinite linear;
+}
+
+.response {
+background: #10b981;
+animation: moveLeft 2s infinite linear;
+}
+
+@keyframes moveRight {
+from { left: 140px; }
+to { left: calc(100% - 140px); }
+}
+
+@keyframes moveLeft {
+from { left: calc(100% - 140px); }
+to { left: 140px; }
+}
+
+.osi-interactive,
+.tcpip-interactive,
+.qos-interactive {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-top: 15px;
+}
+
+.osi-interactive div,
+.tcpip-interactive div,
+.qos-interactive div {
+background: #e0e7ff;
+padding: 12px;
+border-radius: 8px;
+cursor: pointer;
+transition: 0.3s;
+font-weight: 600;
+}
+
+.osi-interactive div:hover,
+.tcpip-interactive div:hover,
+.qos-interactive div:hover {
+background: #c7d2fe;
+}
+
+.grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+gap: 15px;
+margin-top: 20px;
+}
+
+.box {
+background: #ffffff;
+border: 1px solid #dbeafe;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.box h3 {
+color: #1e3a8a;
+margin-bottom: 10px;
+}
+
+.dark {
+background: #0f172a;
+color: #f8fafc;
+}
+
+.dark .card,
+.dark header,
+.dark .box {
+background: #1e293b;
+color: #f8fafc;
+}
+
+.dark nav {
+background: #020617;
+}
+
+.dark .card h2,
+.dark .card h3,
+.dark .box h3 {
+color: #93c5fd;
+}
