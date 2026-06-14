@@ -106,9 +106,9 @@ def handle_client(client_socket, client_address):
                 timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
                 print(f"[Web Server] [{timestamp}] Client IP: {client_address[0]} | Path: {path} | Status Code: 200 OK")
             except (BrokenPipeError, ConnectionResetError):
-                # Log tetap mencatat 200 OK tetapi dengan info client closed connection
+                # Log tetap mencatat 200 OK
                 timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-                print(f"[Web Server] [{timestamp}] Client IP: {client_address[0]} | Path: {path} | Status Code: 200 OK (Client Closed Connection)")
+                print(f"[Web Server] [{timestamp}] Client IP: {client_address[0]} | Path: {path} | Status Code: 200 OK")
         else:
             # 404 Not Found jika file tidak ada
             send_error(client_socket, client_address, path, 404, "Not Found")
@@ -147,7 +147,7 @@ def send_error(client_socket, client_address, path, status_code, status_message)
         except (BrokenPipeError, ConnectionResetError):
             timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
             ip_client = client_address[0] if client_address else "Unknown"
-            print(f"[Web Server] [{timestamp}] Client IP: {ip_client} | Path: {path} | Status Code: {status_code} {status_message} (Client Closed Connection)")
+            print(f"[Web Server] [{timestamp}] Client IP: {ip_client} | Path: {path} | Status Code: {status_code} {status_message}")
     except Exception as e:
         print(f"[Web Server] Gagal mengirim error: {e}")
 
