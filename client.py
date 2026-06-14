@@ -102,7 +102,7 @@ def test_qos(s_ip, s_udp_port):
     total_bytes = 0
     
     for i in range(total_packets):
-        payload = f"Ping {i} {time.time()}"
+        payload = f"QoS-Packet-{i}-{time.time()}"
         data_to_send = payload.encode('utf-8')
         
         send_time = time.time()
