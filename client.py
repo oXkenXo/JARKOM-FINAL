@@ -1,6 +1,7 @@
 import socket
 import threading
 import time
+import statistics
 
 # =========================================
 # CONFIGURATION
@@ -92,7 +93,9 @@ def test_qos(s_ip, s_udp_port):
     Mengukur kualitas jaringan (QoS) dengan mengirim 10 paket UDP ke Web Server.
     Menghitung Delay (RTT), Jitter, Packet Loss, dan Throughput.
     """
-    print(f"\n=== MEMULAI QoS TEST (UDP ke {s_ip}:{s_udp_port}) ===")
+    skenario = input("Masukkan nama skenario (contoh: Idle / Beban Sedang / Beban Tinggi): ").strip() or "Idle"
+    print(f"\n=== MEMULAI QoS TEST [{skenario}] (UDP ke {s_ip}:{s_udp_port}) ===")
+    
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     udp_socket.settimeout(1.0) # Timeout 1 detik untuk packet loss
     
@@ -101,8 +104,11 @@ def test_qos(s_ip, s_udp_port):
     total_packets = 10
     total_bytes = 0
     
+    start_test_time = time.time()
+    
     for i in range(total_packets):
-        payload = f"QoS-Packet-{i}-{time.time()}"
+        # UDP payload menggunakan format: "Ping <seq> <timestamp>"
+        payload = f"Ping {i+1} {time.time()}"
         data_to_send = payload.encode('utf-8')
         
         send_time = time.time()
@@ -122,38 +128,50 @@ def test_qos(s_ip, s_udp_port):
             print(f"Paket {i+1}: RTO (Request Timeout) - Paket Hilang")
         time.sleep(0.1) # Jeda antar paket
         
+    end_test_time = time.time()
+    duration_seconds = end_test_time - start_test_time
     udp_socket.close()
     
     # Kalkulasi Parameter QoS
-    print("\n=== HASIL QoS UDP ANALYSIS ===")
-    # 1. Packet Loss
     loss_percentage = (lost_packets / total_packets) * 100
+    
+    min_rtt = 0.0
+    max_rtt = 0.0
+    avg_rtt = 0.0
+    jitter = 0.0
+    
+    print("\n=== HASIL QoS UDP ANALYSIS ===")
     print(f"Packet Loss : {loss_percentage:.1f}% ({lost_packets}/{total_packets} paket hilang)")
     
     if len(rtts) > 0:
-        # 2. Delay / RTT
         min_rtt = min(rtts)
         max_rtt = max(rtts)
         avg_rtt = sum(rtts) / len(rtts)
         print(f"RTT (Delay) : Min = {min_rtt:.2f} ms | Max = {max_rtt:.2f} ms | Avg = {avg_rtt:.2f} ms")
         
-        # 3. Jitter
+        # Jitter dihitung menggunakan statistics.stdev(rtts) jika RTT > 1
         if len(rtts) > 1:
-            diffs = [abs(rtts[i] - rtts[i-1]) for i in range(1, len(rtts))]
-            jitter = sum(diffs) / len(diffs)
+            jitter = statistics.stdev(rtts)
             print(f"Jitter      : {jitter:.2f} ms")
         else:
-            print("Jitter      : 0.00 ms (Koneksi tidak stabil untuk menghitung jitter)")
+            print("Jitter      : 0.00 ms (Data RTT tidak cukup untuk menghitung jitter)")
             
-        # 4. Throughput Sederhana
-        total_time_seconds = sum(rtts) / 1000.0
-        throughput_kbps = (total_bytes * 8) / (total_time_seconds * 1024) if total_time_seconds > 0 else 0
+        # Throughput = total byte berhasil diterima / durasi total pengujian
+        throughput_kbps = (total_bytes * 8) / (duration_seconds * 1024) if duration_seconds > 0 else 0
         print(f"Throughput  : {throughput_kbps:.2f} Kbps")
     else:
         print("RTT (Delay) : - (Gagal terhubung/100% loss)")
         print("Jitter      : -")
+        throughput_kbps = 0.0
         print("Throughput  : -")
     print("================================")
+    
+    # Format satu baris tabel untuk laporan
+    print("\nFormat Tabel untuk Laporan:")
+    print("Skenario        | Min RTT (ms) | Avg RTT (ms) | Max RTT (ms) | Jitter (ms) | Loss (%) | Throughput (Kbps)")
+    print("-" * 100)
+    print(f"{skenario:<15} | {min_rtt:<12.2f} | {avg_rtt:<12.2f} | {max_rtt:<12.2f} | {jitter:<11.2f} | {loss_percentage:<8.1f} | {throughput_kbps:<17.2f}")
+    print("-" * 100)
 
 # =========================================
 # MULTI CLIENT SIMULATION

@@ -1,6 +1,7 @@
 import socket
 import threading
 import os
+import time
 
 # =========================================
 # CONFIGURATION
@@ -41,6 +42,7 @@ def handle_client(client_socket, client_address):
     Menangani request HTTP TCP dari client/proxy secara multi-threaded.
     Membaca file di folder HTML/ dan mengirimkannya sebagai response HTTP.
     """
+    path = "Unknown"
     try:
         request_data = client_socket.recv(BUFFER_SIZE)
         if not request_data:
@@ -71,7 +73,7 @@ def handle_client(client_socket, client_address):
         
         if not filepath.startswith(html_dir_abs):
             # 403 Forbidden jika mencoba melompat folder
-            send_error(client_socket, 403, "Forbidden")
+            send_error(client_socket, client_address, path, 403, "Forbidden")
             return
 
         if os.path.exists(filepath) and os.path.isfile(filepath):
@@ -98,18 +100,21 @@ def handle_client(client_socket, client_address):
                 "Connection: close\r\n\r\n"
             ).encode('utf-8')
             client_socket.sendall(response_headers + content)
-            print(f"[Web Server] 200 OK - Mengirim {path} ke {client_address[0]}")
+            
+            # Log: IP client, path file, status code, dan timestamp
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+            print(f"[Web Server] [{timestamp}] Client IP: {client_address[0]} | Path: {path} | Status Code: 200 OK")
         else:
             # 404 Not Found jika file tidak ada
-            send_error(client_socket, 404, "Not Found")
+            send_error(client_socket, client_address, path, 404, "Not Found")
             
     except Exception as e:
         print(f"[Web Server] Error melayani client: {e}")
-        send_error(client_socket, 500, "Internal Server Error")
+        send_error(client_socket, client_address, path, 500, "Internal Server Error")
     finally:
         client_socket.close()
 
-def send_error(client_socket, status_code, status_message):
+def send_error(client_socket, client_address, path, status_code, status_message):
     """
     Mengirim file halaman error HTML dari folder HTML/status/
     """
@@ -128,7 +133,11 @@ def send_error(client_socket, status_code, status_message):
             "Connection: close\r\n\r\n"
         ).encode('utf-8')
         client_socket.sendall(headers + content)
-        print(f"[Web Server] Error {status_code} sent.")
+        
+        # Log: IP client, path file, status code, dan timestamp
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        ip_client = client_address[0] if client_address else "Unknown"
+        print(f"[Web Server] [{timestamp}] Client IP: {ip_client} | Path: {path} | Status Code: {status_code} {status_message}")
     except Exception as e:
         print(f"[Web Server] Gagal mengirim error: {e}")
 
