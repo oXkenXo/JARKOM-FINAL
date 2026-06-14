@@ -1,0 +1,252 @@
+/* =========================================
+   1. GLOBAL STYLES & RESET
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f1f5f9;
+    color: #334155;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+/* =========================================
+   2. HEADER & NAVIGATION
+   ========================================= */
+header {
+    background: #ffffff;
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+header h1 {
+    color: #1e3a8a;
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+}
+
+header p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+nav {
+    background: #1e3a8a;
+    padding: 12px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav a {
+    color: #ffffff;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+nav a:hover {
+    color: #93c5fd;
+}
+
+nav a.active {
+    color: #facc15;
+    border-bottom: 2px solid #facc15;
+    padding-bottom: 2px;
+}
+
+/* =========================================
+   3. CARDS & SECTIONS
+   ========================================= */
+.card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+.card h2, .card h3 {
+    color: #1e3a8a;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 8px;
+}
+
+/* =========================================
+   4. FLOW & CONCEPT LAYOUTS
+   ========================================= */
+.flow-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.flow-node {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #3b82f6;
+    padding: 15px;
+    border-radius: 6px;
+    flex: 1;
+    text-align: center;
+}
+
+.flow-node strong {
+    color: #1e3a8a;
+    font-size: 1.05rem;
+}
+
+.flow-node p {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.flow-arrow {
+    font-size: 1.8rem;
+    color: #3b82f6;
+    font-weight: bold;
+}
+
+.concept-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.concept-card {
+    background: #f8fafc;
+    border-left: 4px solid #cbd5e1;
+    padding: 20px;
+    border-radius: 0 6px 6px 0;
+}
+
+.concept-card:nth-child(1) { border-left-color: #3b82f6; }
+.concept-card:nth-child(2) { border-left-color: #10b981; }
+.concept-card:nth-child(3) { border-left-color: #8b5cf6; }
+
+.concept-card h4 {
+    color: #1e293b;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.concept-card p {
+    font-size: 0.95rem;
+    color: #475569;
+}
+
+/* =========================================
+   5. TEMPLATE SPECIFIC ELEMENTS (OSI, TCPIP)
+   ========================================= */
+.layer-list, .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.layer-item, .step-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.layer-item strong, .step-item strong {
+    color: #1e3a8a;
+}
+
+/* =========================================
+   6. ERROR PAGES
+   ========================================= */
+.error-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.error-box {
+    text-align: center;
+    background: #ffffff;
+    padding: 50px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 100%;
+}
+
+.error-box h1 {
+    font-size: 6rem;
+    color: #ef4444;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.error-box h2 {
+    color: #1e293b;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.error-box p {
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+.error-btn {
+    display: inline-block;
+    background: #3b82f6;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.error-btn:hover {
+    background: #2563eb;
+}
+
+/* =========================================
+   7. FOOTER
+   ========================================= */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    font-size: 0.85rem;
+    color: #64748b;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* =========================================
+   8. RESPONSIVE
+   ========================================= */
+@media (max-width: 600px) {
+    .flow-container {
+        flex-direction: column;
+    }
+    .flow-arrow {
+        transform: rotate(90deg);
+        margin: 5px 0;
+    }
+}
