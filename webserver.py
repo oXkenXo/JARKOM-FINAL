@@ -104,11 +104,11 @@ def handle_client(client_socket, client_address):
                 client_socket.sendall(response_headers + content)
                 # Log sukses 200 OK
                 timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-                print(f"[Web Server] [{timestamp}] Client IP: {client_address[0]} | Path: {path} | Status Code: 200 OK")
+                print(f"[Web Server] [{timestamp}] 200 OK - Mengirim {path} ke {client_address[0]}")
             except (BrokenPipeError, ConnectionResetError):
                 # Log tetap mencatat 200 OK
                 timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-                print(f"[Web Server] [{timestamp}] Client IP: {client_address[0]} | Path: {path} | Status Code: 200 OK")
+                print(f"[Web Server] [{timestamp}] 200 OK - Mengirim {path} ke {client_address[0]}")
         else:
             # 404 Not Found jika file tidak ada
             send_error(client_socket, client_address, path, 404, "Not Found")
@@ -140,14 +140,14 @@ def send_error(client_socket, client_address, path, status_code, status_message)
         
         try:
             client_socket.sendall(headers + content)
-            # Log: IP client, path file, status code, dan timestamp
+            # Log error
             timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
             ip_client = client_address[0] if client_address else "Unknown"
-            print(f"[Web Server] [{timestamp}] Client IP: {ip_client} | Path: {path} | Status Code: {status_code} {status_message}")
+            print(f"[Web Server] [{timestamp}] {status_code} {status_message} - Mengirim {path} ke {ip_client}")
         except (BrokenPipeError, ConnectionResetError):
             timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
             ip_client = client_address[0] if client_address else "Unknown"
-            print(f"[Web Server] [{timestamp}] Client IP: {ip_client} | Path: {path} | Status Code: {status_code} {status_message}")
+            print(f"[Web Server] [{timestamp}] {status_code} {status_message} - Mengirim {path} ke {ip_client}")
     except Exception as e:
         print(f"[Web Server] Gagal mengirim error: {e}")
 
